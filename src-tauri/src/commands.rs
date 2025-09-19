@@ -2,6 +2,9 @@ use crate::shortcut::{save_clip, Clip};
 use crate::AppState;
 use rusqlite::{params, Connection};
 use serde::{Deserialize, Serialize};
+use std::fs;
+use std::path::PathBuf;
+use base64::{engine::general_purpose, Engine};
 
 use tauri::{Emitter, Manager, State};
 
@@ -144,6 +147,82 @@ pub fn delete_item(
     app_handle
         .emit("clip-deleted", &item_id)
         .map_err(|e| format!("Failed to emit event: {}", e))?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub fn get_image_data(state: State<'_, AppState>, item_id: String) -> Result<String, String> {
+    let conn =
+        Connection::open(&state.db_path).map_err(|e| format!("Failed to open database: {e}"))?;
+
+    let mut stmt = conn
+        .prepare("SELECT clip FROM clips WHERE id = ?")
+        .map_err(|e| format!("Failed to prepare statement: {e}"))?;
+
+    let clip_json: String = stmt
+        .query_row(params![item_id], |row| row.get(0))
+        .map_err(|e| format!("Failed to get clip: {e}"))?;
+
+    let clip_value: serde_json::Value = serde_json::from_str(&clip_json)
+        .map_err(|e| format!("Failed to parse clip JSON: {e}"))?;
+
+    if clip_value["type"].as_str() == Some("image") {
+        let base64_data = clip_value["content"].as_str().unwrap_or("");
+        Ok(base64_data.to_string())
+    } else {
+        Err("Item is not an image".to_string())
+    }
+}
+
+#[tauri::command]
+pub fn save_image_to_file(
+    state: State<'_, AppState>,
+    item_id: String,
+    file_path: String,
+) -> Result<(), String> {
+    let image_data = get_image_data(state, item_id)?;
+    
+    let image_bytes = general_purpose::STANDARD
+        .decode(&image_data)
+        .map_err(|e| format!("Failed to decode base64: {e}"))?;
+
+    fs::write(&file_path, &image_bytes)
+        .map_err(|e| format!("Failed to write file: {e}"))?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub fn copy_image_to_clipboard(
+    state: State<'_, AppState>,
+    item_id: String,
+) -> Result<(), String> {
+    let image_data = get_image_data(state, item_id)?;
+    
+    let image_bytes = general_purpose::STANDARD
+        .decode(&image_data)
+        .map_err(|e| format!("Failed to decode base64: {e}"))?;
+
+    // Convert PNG bytes back to raw RGBA for clipboard
+    let img = image::load_from_memory(&image_bytes)
+        .map_err(|e| format!("Failed to load image: {e}"))?;
+    
+    let rgba_img = img.to_rgba8();
+    let (width, height) = rgba_img.dimensions();
+    
+    let image_data = arboard::ImageData {
+        width: width as usize,
+        height: height as usize,
+        bytes: rgba_img.into_raw().into(),
+    };
+
+    let mut clipboard = arboard::Clipboard::new()
+        .map_err(|e| format!("Failed to access clipboard: {e}"))?;
+    
+    clipboard
+        .set_image(image_data)
+        .map_err(|e| format!("Failed to set clipboard image: {e}"))?;
 
     Ok(())
 }

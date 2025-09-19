@@ -91,7 +91,7 @@ export default function App() {
       <div className="mx-20 flex-1 flex flex-col">
         <div className="flex flex-row items-center justify-between w-full">
           <div className="my-6 flex-shrink-0 pl-2 ">
-            <img src="/mirr-big.svg" width={20} height="20" />
+            <img src="/spiegel-big.svg" width={20} height="20" />
           </div>
           <div className="flex flex-row items-center gap-2">
             {!hasLlmApiKey && (

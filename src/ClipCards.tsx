@@ -152,7 +152,8 @@ export default function ClipCard(props: ClipCardProps) {
                           item.clip,
                           true,
                           searchQuery,
-                          item.category
+                          item.category,
+                          item.id
                         )}
                       </div>
                     </div>

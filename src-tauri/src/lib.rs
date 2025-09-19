@@ -18,6 +18,8 @@ pub struct AppState {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
                 .with_handler(move |app, _, event| {
@@ -59,6 +61,9 @@ pub fn run() {
             commands::get_items,
             commands::submit_clip,
             commands::delete_item,
+            commands::get_image_data,
+            commands::save_image_to_file,
+            commands::copy_image_to_clipboard,
             settings::get_setting,
             settings::set_setting,
             settings::set_global_hotkey,

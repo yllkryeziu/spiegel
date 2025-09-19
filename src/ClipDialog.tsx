@@ -97,7 +97,8 @@ export default function ClipDialog(props: ClipDialogProps) {
                   selectedItem.clip,
                   false,
                   searchQuery,
-                  selectedItem.category
+                  selectedItem.category,
+                  selectedItem.id
                 )}
               </div>
               {selectedItem.summary && (

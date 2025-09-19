@@ -12,6 +12,7 @@ import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 import ClipCard from "./ClipCards";
 import ClipDialog, { highlightSearchTerm } from "./ClipDialog";
+import ImageViewer from "./components/ImageViewer";
 
 interface GridVirtualizerProps {
   items: ClipItem[];
@@ -243,9 +244,8 @@ const CodeBlock = ({
 
   return (
     <div
-      className={`relative rounded-md overflow-hidden border  ${
-        truncate ? "max-h-24" : "max-h-96"
-      }`}
+      className={`relative rounded-md overflow-hidden border  ${truncate ? "max-h-24" : "max-h-96"
+        }`}
     >
       <SyntaxHighlighter
         language={language}
@@ -278,7 +278,8 @@ export const renderClipContent = (
   clip: ClipItem["clip"],
   truncate: boolean = true,
   searchQuery?: string,
-  category?: string
+  category?: string,
+  itemId?: string
 ) => {
   if (clip.Text?.plain) {
     const text = clip.Text.plain;
@@ -315,14 +316,12 @@ export const renderClipContent = (
 
   if (clip.Image) {
     return (
-      <img
-        src={`data:image/png;base64,${clip.Image.data}`}
-        alt="Clipboard image"
-        className="max-w-full max-h-full object-contain rounded"
-        style={{
-          maxHeight: truncate ? "60px" : "300px",
-          maxWidth: truncate ? "100px" : "100%",
-        }}
+      <ImageViewer
+        imageData={clip.Image.data}
+        itemId={itemId || ""}
+        width={clip.Image.width}
+        height={clip.Image.height}
+        truncate={truncate}
       />
     );
   }

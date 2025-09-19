@@ -27,6 +27,22 @@
       "csp": null
     }
   },
+  "plugins": {
+    "fs": {
+      "scope": {
+        "allow": [
+          "$DOWNLOAD/**",
+          "$DESKTOP/**",
+          "$DOCUMENT/**",
+          "$PICTURE/**"
+        ],
+        "deny": []
+      }
+    },
+    "dialog": {
+      "save": true
+    }
+  },
   "bundle": {
     "active": true,
     "targets": "all",
