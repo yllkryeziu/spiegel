@@ -1,0 +1,136 @@
+@import "tailwindcss";
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: Geist, sans-serif;
+
+  /* Color definitions using HSL variables */
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  /* Border radius variables */
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+@layer base {
+  /* Base styles for elements */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+
+  /* Root theme variables - Updated with monochrome colors */
+  :root {
+    --background: 223.8136 0.0005% 98.6829%;
+    --foreground: 0 0% 0%;
+    --muted: 223.8136 0.0002% 96.0587%;
+    --muted-foreground: 223.8136 0% 32.3067%;
+    --popover: 223.8136 0.0005% 98.6829%;
+    --popover-foreground: 0 0% 0%;
+    --border: 223.8136 0.0001% 89.5577%;
+    --input: 223.8136 0.0001% 92.1478%;
+    --card: 223.8136 -172.5242% 100%;
+    --card-foreground: 0 0% 0%;
+    --primary: 0 0% 0%;
+    --primary-foreground: 223.8136 -172.5242% 100%;
+    --secondary: 223.8136 0.0001% 92.1478%;
+    --secondary-foreground: 0 0% 0%;
+    --accent: 223.8136 0.0001% 92.1478%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 358.4334 74.912% 59.7455%;
+    --destructive-foreground: 223.8136 -172.5242% 100%;
+    --ring: 0 0% 0%;
+    --radius: 0.5rem;
+    --transparent: 0 0% 0% 0;
+    border-radius: 12px;
+  }
+
+  /* Dark theme variables - Updated with monochrome colors */
+  .dark {
+    --background: 0 0% 0%;
+    --foreground: 223.8136 -172.5242% 100%;
+    --muted: 223.8136 0% 11.304%;
+    --muted-foreground: 223.8136 0% 64.471%;
+    --popover: 223.8136 0% 6.8692%;
+    --popover-foreground: 223.8136 -172.5242% 100%;
+    --border: 223.8136 0% 14.0871%;
+    --input: 223.8136 0% 19.8916%;
+    --card: 223.8136 0% 3.5452%;
+    --card-foreground: 223.8136 -172.5242% 100%;
+    --primary: 223.8136 -172.5242% 100%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 223.8136 0% 13.1499%;
+    --secondary-foreground: 223.8136 -172.5242% 100%;
+    --accent: 223.8136 0% 19.8916%;
+    --accent-foreground: 223.8136 -172.5242% 100%;
+    --destructive: 359.9132 100.2494% 67.8807%;
+    --destructive-foreground: 0 0% 0%;
+    --ring: 223.8136 0% 64.471%;
+    --transparent: 0 0% 0% 0;
+  }
+
+  body {
+    @apply font-sans rounded-xl bg-background text-foreground overflow-hidden;
+  }
+  .toolbar-container {
+    @apply bg-card rounded-lg overflow-hidden border border-border;
+  }
+}
+
+/* Utility classes */
+.dragable {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--transparent));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground));
+}
+
+/* Toast styling */
+[data-sonner-toast][data-styled="true"] {
+  padding-top: 4px;
+  padding-right: 4px;
+}
