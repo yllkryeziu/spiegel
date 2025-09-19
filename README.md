@@ -4,7 +4,7 @@
 
 **Spiegel currently only supports Mac**
 
-** Spiegel** is an AI-assisted knowledge management tool designed to save and automatically organize text, images, URLs and more.
+**Spiegel** is an AI-assisted knowledge management tool designed to save and automatically organize text, images, URLs and more.
 
 Spiegel quietly watches your clipboard, stores every item in a local SQLite database, and calls an LLM to **auto-categorise, summarise, and tag** each item.
 
